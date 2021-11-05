@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h2>Список пользоваетелей</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+        </tr>
+        <tbody>
+        <tr>
+            <td th:text="${user.getId()}"></td>
+            <td th:text="${user.getFirstName()}"></td>
+            <td th:text="${user.getLastName()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <form th:action="@{/{id}(id=${user.getId()})}" th:object="${user}" th:method="PATCH">
+        <input type="text" th:field="*{firstName}" id="name" placeholder="Имя">
+        <br/>
+        <input type="text" th:field="*{lastName}" id="lastName" placeholder="Фамилия">
+        <br/>
+        <input type="submit" value="Изменить">
+    </form>
+</div>
+</body>
+</html>
