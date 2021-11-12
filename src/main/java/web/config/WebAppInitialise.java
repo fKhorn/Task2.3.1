@@ -11,7 +11,7 @@ import javax.servlet.ServletException;
 public class WebAppInitialise extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{RootConfig.class};
+        return new Class[]{};
     }
 
     @Override
@@ -27,14 +27,11 @@ public class WebAppInitialise extends AbstractAnnotationConfigDispatcherServletI
     @Override
     public void onStartup(ServletContext aServletContext) throws ServletException {
         super.onStartup(aServletContext);
-        FilterRegistration.Dynamic encodingFilter = aServletContext.addFilter("encodingFilter", new CharacterEncodingFilter());
-        encodingFilter.setInitParameter("encoding", "UTF-8");
-        encodingFilter.setInitParameter("forceEncoding", "true");
-        registerHiddenFieldFilter(aServletContext);
+        FilterRegistration.Dynamic encodingFilter = aServletContext.addFilter("encodingFilter", new CharacterEncodingFilter("UTF-8", true, true));
+        encodingFilter.addMappingForUrlPatterns(null, false, "/*");
+        encodingFilter = aServletContext.addFilter("hiddenHttpMethodFilter", new HiddenHttpMethodFilter() );
+        encodingFilter.addMappingForUrlPatterns(null, false, "/*");
+
     }
 
-    private void registerHiddenFieldFilter(ServletContext aContext) {
-        aContext.addFilter("hiddenHttpMethodFilter",
-                new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null ,true, "/*");
-    }
 }
